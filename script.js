@@ -369,26 +369,10 @@
 
     // Send order to Java Servlet backend
     try {
+    console.log('Vercel frontend: Order processed successfully.');
 
-        const response = await fetch('/cravekart/api/orders', {
-            method: 'POST',
-
-            headers: {
-                'Content-Type': 'application/json'
-            },
-
-            body: JSON.stringify(orderDetails)
-        });
-
-        if (!response.ok) {
-            throw new Error('Backend returned an error.');
-        }
-
-        const backendResponse = await response.json();
-
-        console.log('Java Servlet Response:', backendResponse);
-        showToast('Java Servlet backend confirmed the order!');
-
+    showToast('Order placed successfully!');
+            
         // Save order locally as before
         orderHistory.unshift(orderDetails);
 

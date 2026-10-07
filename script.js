@@ -1,353 +1,879 @@
-        // High-quality food dataset with authentic Gulab Jamun image
-        const foodItems = [
-            { id: 1, name: "Paneer Tikka", category: "Indian", price: 280, isVeg: true, image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=500&q=80", desc: "Marinated cottage cheese cubes grilled with spices in a tandoor." },
-            { id: 2, name: "Veg Biryani", category: "Indian", price: 240, isVeg: true, image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=500&q=80", desc: "Aromatic basmati rice cooked with fresh vegetables and Indian spices." },
-            { id: 3, name: "Butter Chicken", category: "Indian", price: 340, isVeg: false, image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=500&q=80", desc: "Tender chicken cooked in a rich, buttery tomato gravy." },
-            { id: 4, name: "Masala Dosa", category: "Indian", price: 120, isVeg: true, image: "https://images.unsplash.com/photo-1668236543090-82eba5ee5976?auto=format&fit=crop&w=500&q=80", desc: "Crispy rice crepe filled with spiced potato masala, served with chutney." },
-            { id: 5, name: "Hakka Noodles", category: "Chinese", price: 180, isVeg: true, image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=500&q=80", desc: "Stir-fried noodles loaded with crunchy vegetables and oriental sauces." },
-            { id: 6, name: "Veg Burger", category: "Fast Food", price: 99, isVeg: true, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80", desc: "Crispy veg patty topped with cheese, lettuce, and tangy sauce." },
-            { id: 7, name: "Margherita Pizza", category: "Fast Food", price: 299, isVeg: true, image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=500&q=80", desc: "Classic pizza topped with tomato sauce, mozzarella, and fresh basil." },
-            { id: 8, name: "Gulab Jamun", category: "Desserts", price: 90, isVeg: true, image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=500&q=80", desc: "Soft, golden-fried milk-solid balls soaked in warm cardamom sugar syrup." },
-            { id: 9, name: "Mango Lassi", category: "Beverages", price: 80, isVeg: true, image: "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=500&q=80", desc: "Thick and refreshing yogurt drink blended with sweet mango pulp." },
-            { id: 10, name: "Garlic Naan", category: "Indian", price: 50, isVeg: true, image: "https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=500&q=80", desc: "Soft leavened flatbread topped with minced garlic and butter." },
-            { id: 11, name: "Chole Bhature", category: "Indian", price: 160, isVeg: true, image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=500&q=80", desc: "Spiced chickpea curry paired with deep-fried fluffy bread." },
-            { id: 12, name: "Cold Coffee", category: "Beverages", price: 110, isVeg: true, image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=500&q=80", desc: "Rich chilled coffee blended with milk and topped with chocolate syrup." }
-        ];
+/* ================= FOOD DATA ================= */
 
-        // State Management
-        let cart = JSON.parse(localStorage.getItem('cravekart_cart')) || [];
-        let orderHistory = JSON.parse(localStorage.getItem('cravekart_orders')) || [];
-        let activeCategory = 'All';
-        let searchQuery = '';
-        let sortBy = 'default';
+const foodItems = [
 
-        function handleRouting() {
-            const hash = window.location.hash || '#home';
-            const views = document.querySelectorAll('.view');
-            const navLinks = document.querySelectorAll('.nav-link');
+    {
+        id: 1,
+        name: "Butter Chicken",
+        category: "Indian",
+        price: 280,
+        isVeg: false,
+        image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=500&q=80",
+        desc: "Creamy tomato-based chicken curry with Indian spices."
+    },
 
-            views.forEach(view => {
-                if ('#' + view.id === hash) {
-                    view.classList.add('active');
-                } else {
-                    view.classList.remove('active');
-                }
-            });
+    {
+        id: 2,
+        name: "Paneer Tikka",
+        category: "Indian",
+        price: 220,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?auto=format&fit=crop&w=500&q=80",
+        desc: "Grilled paneer cubes marinated with spices and yogurt."
+    },
 
-            navLinks.forEach(link => {
-                if (link.getAttribute('href') === hash) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
+    {
+        id: 3,
+        name: "Veg Hakka Noodles",
+        category: "Chinese",
+        price: 150,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=500&q=80",
+        desc: "Stir-fried noodles with fresh vegetables and sauces."
+    },
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+    {
+        id: 4,
+        name: "Chicken Fried Rice",
+        category: "Chinese",
+        price: 190,
+        isVeg: false,
+        image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=500&q=80",
+        desc: "Fried rice with chicken, vegetables and oriental sauces."
+    },
 
-            if (hash === '#cart') renderCartView();
-            if (hash === '#checkout') renderCheckoutView();
-            if (hash === '#orders') renderOrdersView();
+    {
+        id: 5,
+        name: "Veg Burger",
+        category: "Fast Food",
+        price: 99,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80",
+        desc: "Crispy veg patty with cheese, lettuce and tangy sauce."
+    },
+
+    {
+        id: 6,
+        name: "Margherita Pizza",
+        category: "Fast Food",
+        price: 299,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=500&q=80",
+        desc: "Classic pizza with tomato sauce, mozzarella and basil."
+    },
+
+    {
+        id: 7,
+        name: "Gulab Jamun",
+        category: "Desserts",
+        price: 90,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=500&q=80",
+        desc: "Soft milk-solid balls soaked in warm sugar syrup."
+    },
+
+    {
+        id: 8,
+        name: "Mango Lassi",
+        category: "Beverages",
+        price: 80,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1527661591475-527312dd65f5?auto=format&fit=crop&w=500&q=80",
+        desc: "Refreshing yogurt drink blended with sweet mango."
+    },
+
+    {
+        id: 9,
+        name: "Garlic Naan",
+        category: "Indian",
+        price: 50,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&w=500&q=80",
+        desc: "Soft naan topped with garlic and butter."
+    },
+
+    {
+        id: 10,
+        name: "Chole Bhature",
+        category: "Indian",
+        price: 160,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=500&q=80",
+        desc: "Spiced chickpea curry served with fluffy bhature."
+    },
+
+    {
+        id: 11,
+        name: "Cold Coffee",
+        category: "Beverages",
+        price: 110,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=500&q=80",
+        desc: "Cold coffee blended with milk and chocolate syrup."
+    },
+
+    {
+        id: 12,
+        name: "Veg Manchurian",
+        category: "Chinese",
+        price: 170,
+        isVeg: true,
+        image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=500&q=80",
+        desc: "Crispy vegetable balls served in spicy Manchurian sauce."
+    }
+
+];
+
+
+/* ================= VARIABLES ================= */
+
+let cart = JSON.parse(localStorage.getItem("cravekart_cart")) || [];
+
+let orderHistory =
+    JSON.parse(localStorage.getItem("cravekart_orders")) || [];
+
+let activeCategory = "All";
+let searchText = "";
+let sortType = "default";
+
+const deliveryFee = 45;
+
+
+/* ================= PAGE START ================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    setupEvents();
+
+    showPage();
+
+    displayFeaturedFood();
+
+    displayMenu();
+
+    updateCartCount();
+
+});
+
+
+/* ================= NAVIGATION ================= */
+
+window.addEventListener("hashchange", showPage);
+
+
+function showPage() {
+
+    let page = window.location.hash || "#home";
+
+    const views = document.querySelectorAll(".view");
+
+    views.forEach(function (view) {
+
+        if ("#" + view.id === page) {
+            view.classList.add("active");
+        } else {
+            view.classList.remove("active");
         }
 
-        window.addEventListener('hashchange', handleRouting);
-        window.addEventListener('DOMContentLoaded', () => {
-            handleRouting();
-            initApp();
+    });
+
+
+    const links = document.querySelectorAll(".nav-link");
+
+    links.forEach(function (link) {
+
+        if (link.getAttribute("href") === page) {
+            link.classList.add("active");
+        } else {
+            link.classList.remove("active");
+        }
+
+    });
+
+
+    window.scrollTo(0, 0);
+
+
+    if (page === "#cart") {
+        displayCart();
+    }
+
+    if (page === "#checkout") {
+        displayCheckout();
+    }
+
+    if (page === "#orders") {
+        displayOrders();
+    }
+
+}
+
+
+/* ================= EVENT LISTENERS ================= */
+
+function setupEvents() {
+
+    const search =
+        document.getElementById("menu-search-input");
+
+    search.addEventListener("input", function () {
+
+        searchText = search.value.toLowerCase();
+
+        displayMenu();
+
+    });
+
+
+    const filterButtons =
+        document.querySelectorAll(".filter-btn");
+
+    filterButtons.forEach(function (button) {
+
+        button.addEventListener("click", function () {
+
+            filterButtons.forEach(function (btn) {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            activeCategory =
+                button.getAttribute("data-cat");
+
+            displayMenu();
+
         });
 
-        function initApp() {
-            renderFeaturedItems();
-            renderMenuGrid();
-            updateCartBadge();
-            setupEventListeners();
-        }
+    });
 
-        function setupEventListeners() {
-            const searchInput = document.getElementById('menu-search-input');
-            if (searchInput) {
-                searchInput.addEventListener('input', (e) => {
-                    searchQuery = e.target.value.toLowerCase();
-                    renderMenuGrid();
-                });
-            }
 
-            const catButtons = document.querySelectorAll('#category-filter-bar .filter-btn');
-            catButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    catButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    activeCategory = btn.getAttribute('data-cat');
-                    renderMenuGrid();
-                });
-            });
+    const sort =
+        document.getElementById("price-sort-select");
 
-            const sortSelect = document.getElementById('price-sort-select');
-            if (sortSelect) {
-                sortSelect.addEventListener('change', (e) => {
-                    sortBy = e.target.value;
-                    renderMenuGrid();
-                });
-            }
+    sort.addEventListener("change", function () {
 
-            const toggleBtn = document.getElementById('mobile-toggle-btn');
-            const navLinks = document.getElementById('nav-links');
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', () => {
-                    navLinks.classList.toggle('open');
-                });
-            }
-        }
+        sortType = sort.value;
 
-        function createFoodCardHTML(item) {
-            return `
-                <div class="food-card">
-                    <div class="food-img-wrapper">
-                        <img src="${item.image}" alt="${item.name}" class="food-img" onerror="this.onerror=null; this.src='https://placehold.co/500x300/FF5722/FFFFFF?text=${encodeURIComponent(item.name)}'">
-                        <span class="food-tag ${item.isVeg ? 'tag-veg' : 'tag-nonveg'}">
-                            ${item.isVeg ? '• Veg' : '• Non-Veg'}
-                        </span>
-                    </div>
-                    <div class="food-content">
-                        <h3 class="food-title">${item.name}</h3>
-                        <p class="food-desc">${item.desc}</p>
-                        <div class="food-footer">
-                            <span class="food-price">₹${item.price}</span>
-                            <button class="add-cart-btn" onclick="addToCart(${item.id})">
-                                <i class="fa-solid fa-plus"></i> Add
-                            </button>
-                        </div>
-                    </div>
+        displayMenu();
+
+    });
+
+
+    const mobileButton =
+        document.getElementById("mobile-toggle-btn");
+
+    mobileButton.addEventListener("click", function () {
+
+        document
+            .getElementById("nav-links")
+            .classList.toggle("open");
+
+    });
+
+}
+
+
+/* ================= FOOD CARDS ================= */
+
+function createFoodCard(item) {
+
+    let vegText = item.isVeg ? "• Veg" : "• Non-Veg";
+
+    let vegClass = item.isVeg
+        ? "tag-veg"
+        : "tag-nonveg";
+
+
+    return `
+
+        <div class="food-card">
+
+            <div class="food-img-wrapper">
+
+                <img
+                    src="${item.image}"
+                    alt="${item.name}"
+                    class="food-img"
+                    onerror="this.src='https://placehold.co/500x300?text=Food'"
+                >
+
+                <span class="food-tag ${vegClass}">
+                    ${vegText}
+                </span>
+
+            </div>
+
+
+            <div class="food-content">
+
+                <h3 class="food-title">
+                    ${item.name}
+                </h3>
+
+                <p class="food-desc">
+                    ${item.desc}
+                </p>
+
+
+                <div class="food-footer">
+
+                    <span class="food-price">
+                        ₹${item.price}
+                    </span>
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addToCart(${item.id})">
+
+                        <i class="fa-solid fa-plus"></i>
+                        Add
+
+                    </button>
+
                 </div>
-            `;
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ================= HOME FOOD ================= */
+
+function displayFeaturedFood() {
+
+    const container =
+        document.getElementById("home-featured-grid");
+
+    let featured = foodItems.slice(0, 4);
+
+    container.innerHTML =
+        featured.map(createFoodCard).join("");
+
+}
+
+
+/* ================= MENU ================= */
+
+function displayMenu() {
+
+    const menu =
+        document.getElementById("full-menu-grid");
+
+    const noResults =
+        document.getElementById("no-results-msg");
+
+
+    let filteredFood = foodItems.filter(function (item) {
+
+        let categoryMatch =
+            activeCategory === "All" ||
+            item.category === activeCategory;
+
+
+        let searchMatch =
+            item.name.toLowerCase().includes(searchText) ||
+            item.desc.toLowerCase().includes(searchText);
+
+
+        return categoryMatch && searchMatch;
+
+    });
+
+
+    if (sortType === "low-high") {
+
+        filteredFood.sort(function (a, b) {
+            return a.price - b.price;
+        });
+
+    }
+
+    if (sortType === "high-low") {
+
+        filteredFood.sort(function (a, b) {
+            return b.price - a.price;
+        });
+
+    }
+
+
+    if (filteredFood.length === 0) {
+
+        menu.innerHTML = "";
+
+        noResults.style.display = "block";
+
+        return;
+
+    }
+
+
+    noResults.style.display = "none";
+
+    menu.innerHTML =
+        filteredFood.map(createFoodCard).join("");
+
+}
+
+
+/* ================= CATEGORY FROM HOME ================= */
+
+function selectCategoryFilter(category) {
+
+    activeCategory = category;
+
+
+    const buttons =
+        document.querySelectorAll(".filter-btn");
+
+
+    buttons.forEach(function (button) {
+
+        if (button.getAttribute("data-cat") === category) {
+            button.classList.add("active");
+        } else {
+            button.classList.remove("active");
         }
 
-        function renderFeaturedItems() {
-            const featuredGrid = document.getElementById('home-featured-grid');
-            if (!featuredGrid) return;
-            const featured = foodItems.slice(0, 4);
-            featuredGrid.innerHTML = featured.map(item => createFoodCardHTML(item)).join('');
-        }
+    });
 
-        function renderMenuGrid() {
-            const menuGrid = document.getElementById('full-menu-grid');
-            const noResultsMsg = document.getElementById('no-results-msg');
-            if (!menuGrid) return;
 
-            let filtered = foodItems.filter(item => {
-                const matchesCat = activeCategory === 'All' || item.category === activeCategory;
-                const matchesSearch = item.name.toLowerCase().includes(searchQuery) || item.desc.toLowerCase().includes(searchQuery);
-                return matchesCat && matchesSearch;
-            });
+    window.location.hash = "#menu";
 
-            if (sortBy === 'low-high') {
-                filtered.sort((a, b) => a.price - b.price);
-            } else if (sortBy === 'high-low') {
-                filtered.sort((a, b) => b.price - a.price);
-            }
+    displayMenu();
 
-            if (filtered.length === 0) {
-                menuGrid.innerHTML = '';
-                noResultsMsg.style.display = 'block';
-            } else {
-                noResultsMsg.style.display = 'none';
-                menuGrid.innerHTML = filtered.map(item => createFoodCardHTML(item)).join('');
-            }
-        }
+}
 
-        function selectCategoryFilter(category) {
-            activeCategory = category;
-            const catButtons = document.querySelectorAll('#category-filter-bar .filter-btn');
-            catButtons.forEach(btn => {
-                if (btn.getAttribute('data-cat') === category) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-            window.location.hash = '#menu';
-            renderMenuGrid();
-        }
 
-        function addToCart(itemId) {
-            const item = foodItems.find(f => f.id === itemId);
-            if (!item) return;
+/* ================= CART ================= */
 
-            const existingIndex = cart.findIndex(c => c.id === itemId);
-            if (existingIndex > -1) {
-                cart[existingIndex].qty += 1;
-            } else {
-                cart.push({ ...item, qty: 1 });
-            }
+function addToCart(id) {
 
-            saveCart();
-            updateCartBadge();
-            showToast(`Added "${item.name}" to your cart!`);
-        }
+    let item =
+        foodItems.find(function (food) {
+            return food.id === id;
+        });
 
-        function updateQuantity(itemId, change) {
-            const index = cart.findIndex(c => c.id === itemId);
-            if (index > -1) {
-                cart[index].qty += change;
-                if (cart[index].qty <= 0) {
-                    cart.splice(index, 1);
-                }
-                saveCart();
-                renderCartView();
-                updateCartBadge();
-            }
-        }
 
-        function removeFromCart(itemId) {
-            cart = cart.filter(c => c.id !== itemId);
-            saveCart();
-            renderCartView();
-            updateCartBadge();
-            showToast('Item removed from cart.');
-        }
-
-        // Functional Clear Cart Triggering Modal
-        function promptClearCart() {
-            if (cart.length === 0) return;
-            document.getElementById('clear-cart-modal').classList.add('active');
-        }
-
-        function closeClearCartModal() {
-            document.getElementById('clear-cart-modal').classList.remove('active');
-        }
-
-        function confirmClearCart() {
-            cart = [];
-            saveCart();
-            renderCartView();
-            updateCartBadge();
-            closeClearCartModal();
-            showToast('Your cart has been cleared.');
-        }
-
-        function saveCart() {
-            localStorage.setItem('cravekart_cart', JSON.stringify(cart));
-        }
-
-        function updateCartBadge() {
-            const badge = document.getElementById('cart-badge-count');
-            const totalQty = cart.reduce((acc, curr) => acc + curr.qty, 0);
-            if (badge) badge.innerText = totalQty;
-        }
-
-        function renderCartView() {
-            const wrapper = document.getElementById('cart-content-wrapper');
-            const emptyState = document.getElementById('cart-empty-state');
-            const itemsList = document.getElementById('cart-items-list');
-
-            if (cart.length === 0) {
-                wrapper.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
-
-            wrapper.style.display = 'grid';
-            emptyState.style.display = 'none';
-
-            let subtotal = 0;
-            itemsList.innerHTML = cart.map(item => {
-                const itemTotal = item.price * item.qty;
-                subtotal += itemTotal;
-                return `
-                    <div class="cart-item">
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-img">
-                        <div class="cart-item-details">
-                            <div class="cart-item-title">${item.name}</div>
-                            <div class="cart-item-price">₹${item.price} x ${item.qty} = ₹${itemTotal}</div>
-                        </div>
-                        <div class="qty-controls">
-                            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                            <span>${item.qty}</span>
-                            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                        </div>
-                        <button class="remove-item-btn" onclick="removeFromCart(${item.id})" title="Remove item">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                `;
-            }).join('');
-
-            const deliveryFee = 45;
-            const tax = Math.round(subtotal * 0.05);
-            const grandTotal = subtotal + deliveryFee + tax;
-
-            document.getElementById('summary-subtotal').innerText = `₹${subtotal}`;
-            document.getElementById('summary-tax').innerText = `₹${tax}`;
-            document.getElementById('summary-total').innerText = `₹${grandTotal}`;
-        }
-
-        function renderCheckoutView() {
-            if (cart.length === 0) {
-                window.location.hash = '#cart';
-                return;
-            }
-
-            const preview = document.getElementById('checkout-items-preview');
-            let subtotal = 0;
-
-            preview.innerHTML = cart.map(item => {
-                const itemTotal = item.price * item.qty;
-                subtotal += itemTotal;
-                return `
-                    <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.9rem;">
-                        <span>${item.name} x ${item.qty}</span>
-                        <strong>₹${itemTotal}</strong>
-                    </div>
-                `;
-            }).join('');
-
-            const deliveryFee = 45;
-            const tax = Math.round(subtotal * 0.05);
-            const grandTotal = subtotal + deliveryFee + tax;
-
-            document.getElementById('checkout-subtotal').innerText = `₹${subtotal}`;
-            document.getElementById('checkout-tax').innerText = `₹${tax}`;
-            document.getElementById('checkout-total').innerText = `₹${grandTotal}`;
-        }
-
-        async function handleOrderSubmission(event) {
-    event.preventDefault();
-
-    if (cart.length === 0) return;
-
-    const name = document.getElementById('cust-name').value.trim();
-    const phone = document.getElementById('cust-phone').value.trim();
-    const email = document.getElementById('cust-email').value.trim();
-    const address = document.getElementById('cust-address').value.trim();
-    const city = document.getElementById('cust-city').value.trim();
-    const pincode = document.getElementById('cust-pincode').value.trim();
-
-    const paymentInput = document.querySelector(
-        'input[name="paymentMethod"]:checked'
-    );
-
-    if (!paymentInput) {
-        showToast('Please select a payment method.');
+    if (!item) {
         return;
     }
 
-    const paymentMethod = paymentInput.value;
 
-    const subtotal = cart.reduce(
-        (acc, item) => acc + (item.price * item.qty),
-        0
+    let existing =
+        cart.find(function (food) {
+            return food.id === id;
+        });
+
+
+    if (existing) {
+
+        existing.qty++;
+
+    } else {
+
+        cart.push({
+            ...item,
+            qty: 1
+        });
+
+    }
+
+
+    saveCart();
+
+    updateCartCount();
+
+    showToast(item.name + " added to cart!");
+
+}
+
+
+function updateQuantity(id, change) {
+
+    let item =
+        cart.find(function (food) {
+            return food.id === id;
+        });
+
+
+    if (!item) {
+        return;
+    }
+
+
+    item.qty += change;
+
+
+    if (item.qty <= 0) {
+
+        cart =
+            cart.filter(function (food) {
+                return food.id !== id;
+            });
+
+    }
+
+
+    saveCart();
+
+    updateCartCount();
+
+    displayCart();
+
+}
+
+
+function removeFromCart(id) {
+
+    cart =
+        cart.filter(function (item) {
+            return item.id !== id;
+        });
+
+
+    saveCart();
+
+    updateCartCount();
+
+    displayCart();
+
+    showToast("Item removed from cart.");
+
+}
+
+
+/* ================= CLEAR CART ================= */
+
+function promptClearCart() {
+
+    if (cart.length === 0) {
+        return;
+    }
+
+    document
+        .getElementById("clear-cart-modal")
+        .classList.add("active");
+
+}
+
+
+function closeClearCartModal() {
+
+    document
+        .getElementById("clear-cart-modal")
+        .classList.remove("active");
+
+}
+
+
+function confirmClearCart() {
+
+    cart = [];
+
+    saveCart();
+
+    updateCartCount();
+
+    displayCart();
+
+    closeClearCartModal();
+
+    showToast("Cart cleared.");
+
+}
+
+
+/* ================= LOCAL STORAGE ================= */
+
+function saveCart() {
+
+    localStorage.setItem(
+        "cravekart_cart",
+        JSON.stringify(cart)
     );
 
-    const tax = Math.round(subtotal * 0.05);
-    const grandTotal = subtotal + 45 + tax;
+}
 
-    const orderId =
-        'CK-' + Math.floor(100000 + Math.random() * 900000);
 
-    const orderDate = new Date().toLocaleString();
+function updateCartCount() {
 
-    const orderDetails = {
+    let count = 0;
+
+    cart.forEach(function (item) {
+        count += item.qty;
+    });
+
+
+    document.getElementById(
+        "cart-badge-count"
+    ).innerText = count;
+
+}
+
+
+/* ================= CART PAGE ================= */
+
+function displayCart() {
+
+    const wrapper =
+        document.getElementById("cart-content-wrapper");
+
+    const empty =
+        document.getElementById("cart-empty-state");
+
+    const list =
+        document.getElementById("cart-items-list");
+
+
+    if (cart.length === 0) {
+
+        wrapper.style.display = "none";
+
+        empty.style.display = "block";
+
+        return;
+
+    }
+
+
+    wrapper.style.display = "grid";
+
+    empty.style.display = "none";
+
+
+    let subtotal = 0;
+
+
+    list.innerHTML =
+        cart.map(function (item) {
+
+            let total =
+                item.price * item.qty;
+
+            subtotal += total;
+
+
+            return `
+
+                <div class="cart-item">
+
+                    <img
+                        src="${item.image}"
+                        class="cart-item-img"
+                        alt="${item.name}"
+                    >
+
+                    <div class="cart-item-details">
+
+                        <div class="cart-item-title">
+                            ${item.name}
+                        </div>
+
+                        <div class="cart-item-price">
+                            ₹${item.price} × ${item.qty}
+                            = ₹${total}
+                        </div>
+
+                    </div>
+
+
+                    <div class="qty-controls">
+
+                        <button
+                            class="qty-btn"
+                            onclick="updateQuantity(${item.id}, -1)">
+                            -
+                        </button>
+
+                        <span>${item.qty}</span>
+
+                        <button
+                            class="qty-btn"
+                            onclick="updateQuantity(${item.id}, 1)">
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <button
+                        class="remove-item-btn"
+                        onclick="removeFromCart(${item.id})">
+
+                        <i class="fa-solid fa-trash"></i>
+
+                    </button>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    let tax = Math.round(subtotal * 0.05);
+
+    let total = subtotal + deliveryFee + tax;
+
+
+    document.getElementById("summary-subtotal")
+        .innerText = "₹" + subtotal;
+
+    document.getElementById("summary-tax")
+        .innerText = "₹" + tax;
+
+    document.getElementById("summary-total")
+        .innerText = "₹" + total;
+
+}
+
+
+/* ================= CHECKOUT ================= */
+
+function displayCheckout() {
+
+    if (cart.length === 0) {
+
+        window.location.hash = "#cart";
+
+        return;
+
+    }
+
+
+    const preview =
+        document.getElementById(
+            "checkout-items-preview"
+        );
+
+
+    let subtotal = 0;
+
+
+    preview.innerHTML =
+        cart.map(function (item) {
+
+            let total =
+                item.price * item.qty;
+
+            subtotal += total;
+
+
+            return `
+
+                <div class="summary-row">
+
+                    <span>
+                        ${item.name} × ${item.qty}
+                    </span>
+
+                    <b>
+                        ₹${total}
+                    </b>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    let tax = Math.round(subtotal * 0.05);
+
+    let total =
+        subtotal + deliveryFee + tax;
+
+
+    document.getElementById("checkout-subtotal")
+        .innerText = "₹" + subtotal;
+
+    document.getElementById("checkout-tax")
+        .innerText = "₹" + tax;
+
+    document.getElementById("checkout-total")
+        .innerText = "₹" + total;
+
+}
+
+
+/* ================= PLACE ORDER ================= */
+
+function handleOrderSubmission(event) {
+
+    event.preventDefault();
+
+
+    if (cart.length === 0) {
+        return;
+    }
+
+
+    let name =
+        document.getElementById("cust-name").value.trim();
+
+    let phone =
+        document.getElementById("cust-phone").value.trim();
+
+    let email =
+        document.getElementById("cust-email").value.trim();
+
+    let address =
+        document.getElementById("cust-address").value.trim();
+
+    let city =
+        document.getElementById("cust-city").value.trim();
+
+    let pincode =
+        document.getElementById("cust-pincode").value.trim();
+
+
+    let payment =
+        document.querySelector(
+            'input[name="paymentMethod"]:checked'
+        ).value;
+
+
+    let subtotal = 0;
+
+
+    cart.forEach(function (item) {
+
+        subtotal +=
+            item.price * item.qty;
+
+    });
+
+
+    let tax =
+        Math.round(subtotal * 0.05);
+
+
+    let total =
+        subtotal + deliveryFee + tax;
+
+
+    let orderId =
+        "CK-" +
+        Math.floor(
+            100000 + Math.random() * 900000
+        );
+
+
+    let date =
+        new Date().toLocaleString();
+
+
+    let order = {
+
         id: orderId,
-        date: orderDate,
+
+        date: date,
 
         customer: {
             name: name,
@@ -360,118 +886,226 @@
 
         items: [...cart],
 
-        paymentMethod: paymentMethod,
+        paymentMethod: payment,
 
-        totalPaid: grandTotal,
+        totalPaid: total,
 
-        status: 'Order Placed'
+        status: "Order Placed"
+
     };
 
-    // Send order to Java Servlet backend
-    try {
-    console.log('Vercel frontend: Order processed successfully.');
 
-    showToast('Order placed successfully!');
-            
-        // Save order locally as before
-        orderHistory.unshift(orderDetails);
+    /* Save order */
 
-        localStorage.setItem(
-            'cravekart_orders',
-            JSON.stringify(orderHistory)
+    orderHistory.unshift(order);
+
+
+    localStorage.setItem(
+        "cravekart_orders",
+        JSON.stringify(orderHistory)
+    );
+
+
+    /* Show confirmation */
+
+    document.getElementById("conf-order-id")
+        .innerText = orderId;
+
+    document.getElementById("conf-date-time")
+        .innerText = date;
+
+    document.getElementById("conf-payment-method")
+        .innerText = payment;
+
+    document.getElementById("conf-total-paid")
+        .innerText = "₹" + total;
+
+
+    let itemsList =
+        document.getElementById(
+            "conf-items-list"
         );
 
-        // Display confirmation details
-        document.getElementById('conf-order-id').innerText = orderId;
-        document.getElementById('conf-date-time').innerText = orderDate;
-        document.getElementById('conf-payment-method').innerText =
-            paymentMethod;
-        document.getElementById('conf-total-paid').innerText =
-            `₹${grandTotal}`;
 
-        const confItemsList =
-            document.getElementById('conf-items-list');
+    itemsList.innerHTML =
+        cart.map(function (item) {
 
-        confItemsList.innerHTML = cart.map(i => `
-            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.9rem;">
-                <span>${i.name} (${i.qty} qty)</span>
-                <span>₹${i.price * i.qty}</span>
-            </div>
-        `).join('');
+            return `
 
-        // Clear cart
-        cart = [];
+                <div class="receipt-row">
 
-        saveCart();
-        updateCartBadge();
+                    <span>
+                        ${item.name} × ${item.qty}
+                    </span>
 
-        // Go to confirmation page
-        window.location.hash = '#confirmation';
+                    <span>
+                        ₹${item.price * item.qty}
+                    </span>
 
-        showToast('Order placed successfully — Java Servlet backend confirmed!');
+                </div>
 
-    } catch (error) {
+            `;
 
-        console.error('Backend connection error:', error);
+        }).join("");
 
-        showToast(
-            'Unable to connect to the Java backend.'
-        );
-    }
+
+    /* Empty cart */
+
+    cart = [];
+
+    saveCart();
+
+    updateCartCount();
+
+
+    /* Open confirmation page */
+
+    window.location.hash = "#confirmation";
+
+    showToast("Order placed successfully!");
+
 }
 
-        // Functional Print Receipt Handler
-        function triggerPrintReceipt() {
-            window.print();
-        }
 
-        function renderOrdersView() {
-            const container = document.getElementById('order-history-container');
-            const emptyState = document.getElementById('orders-empty-state');
+/* ================= ORDER HISTORY ================= */
 
-            if (orderHistory.length === 0) {
-                container.style.display = 'none';
-                emptyState.style.display = 'block';
-                return;
-            }
+function displayOrders() {
 
-            container.style.display = 'block';
-            emptyState.style.display = 'none';
+    const container =
+        document.getElementById(
+            "order-history-container"
+        );
 
-            container.innerHTML = orderHistory.map(order => `
+    const empty =
+        document.getElementById(
+            "orders-empty-state"
+        );
+
+
+    if (orderHistory.length === 0) {
+
+        container.style.display = "none";
+
+        empty.style.display = "block";
+
+        return;
+
+    }
+
+
+    container.style.display = "block";
+
+    empty.style.display = "none";
+
+
+    container.innerHTML =
+        orderHistory.map(function (order) {
+
+            let items = order.items.map(function (item) {
+
+                return `
+                    <div>
+                        ${item.qty} × ${item.name}
+                    </div>
+                `;
+
+            }).join("");
+
+
+            return `
+
                 <div class="order-history-card">
+
                     <div class="order-history-header">
+
                         <div>
-                            <strong>Order #${order.id}</strong>
-                            <div style="font-size:0.8rem; color:var(--text-muted);">${order.date}</div>
+
+                            <strong>
+                                Order #${order.id}
+                            </strong>
+
+                            <div>
+                                ${order.date}
+                            </div>
+
                         </div>
-                        <span class="status-chip status-placed">${order.status}</span>
+
+                        <span class="status-chip">
+                            ${order.status}
+                        </span>
+
                     </div>
-                    <div style="margin-bottom: 1rem;">
-                        ${order.items.map(i => `<div style="font-size:0.9rem; color:var(--text-muted);">${i.qty}x ${i.name}</div>`).join('')}
+
+
+                    <div>
+                        ${items}
                     </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:0.75rem;">
-                        <span>Payment: <strong>${order.paymentMethod}</strong></span>
-                        <strong style="font-size:1.1rem; color:var(--primary);">Total: ₹${order.totalPaid}</strong>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Payment:
+                            <b>${order.paymentMethod}</b>
+                        </span>
+
+                        <strong>
+                            Total: ₹${order.totalPaid}
+                        </strong>
+
                     </div>
+
                 </div>
-            `).join('');
-        }
 
-        function showToast(message) {
-            const container = document.getElementById('toast-container');
-            if (!container) return;
+            `;
 
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color:var(--accent)"></i> <span>${message}</span>`;
+        }).join("");
 
-            container.appendChild(toast);
+}
 
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
+
+/* ================= PRINT RECEIPT ================= */
+
+function triggerPrintReceipt() {
+
+    window.print();
+
+}
+
+
+/* ================= TOAST MESSAGE ================= */
+
+function showToast(message) {
+
+    const container =
+        document.getElementById(
+            "toast-container"
+        );
+
+
+    const toast =
+        document.createElement("div");
+
+
+    toast.className = "toast";
+
+
+    toast.innerHTML = `
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <span>${message}</span>
+
+    `;
+
+
+    container.appendChild(toast);
+
+
+    setTimeout(function () {
+
+        toast.remove();
+
+    }, 3000);
+
+}
